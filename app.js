@@ -1,5 +1,3 @@
-import updateManager from './common/updateManager';
-
 App({
   onLaunch() {
     if (!wx.cloud) {
@@ -34,10 +32,6 @@ App({
         console.error('获取用户 OpenID 失败:', err);
       },
     });
-  },
-
-  onShow: function () {
-    updateManager();
   },
   globalData: {
     isLogin: false, // 全局登录状态
