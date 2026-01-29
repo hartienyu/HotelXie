@@ -1,6 +1,5 @@
 import { fetchGoodsList } from '../../services/good/fetchGoods';
 import { submitBooking } from '../../services/booking/submitBooking';
-import Toast from 'tdesign-miniprogram/toast/index';
 
 Page({
   data: {
