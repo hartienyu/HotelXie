@@ -1,4 +1,4 @@
-export function fetchGoodsList(pageIndex = 1, pageSize = 20) {
+export function fetchHotelsList(pageIndex = 1, pageSize = 20) {
   const db = wx.cloud.database();
   const skipCount = Math.max(0, (pageIndex - 1) * pageSize);
 

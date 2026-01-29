@@ -1,4 +1,4 @@
-import { fetchGoodsList } from '../../services/good/fetchGoods';
+import { fetchHotelsList } from '../../services/hotel/fetchHotels';
 import { submitBooking } from '../../services/booking/submitBooking';
 
 Page({
@@ -59,7 +59,7 @@ Page({
     if (fresh) pageIndex = 1;
 
     try {
-      const nextList = await fetchGoodsList(pageIndex, pageSize);
+      const nextList = await fetchHotelsList(pageIndex, pageSize);
       this.setData({
         goodsList: fresh ? nextList : this.data.goodsList.concat(nextList),
         goodsListLoadStatus: nextList.length < pageSize ? 2 : 0,
