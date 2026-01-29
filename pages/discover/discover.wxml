@@ -7,9 +7,7 @@
   <view class="hotel-list-container">
     <block wx:for="{{goodsList}}" wx:key="spuId">
       <view class="hotel-card" bindtap="goodListClickHandle" data-index="{{index}}">
-        
         <image class="hotel-cover" src="{{item.hotelImages[0]}}" mode="aspectFill" lazy-load />
-        
         <view class="hotel-info">
           <view class="name-row">
             <text class="hotel-name">{{item.name}}</text>
@@ -22,23 +20,19 @@
           <view class="tags-row">
             <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
           </view>
-          
           <view class="divider"></view>
 
           <view class="room-list">
             <view class="room-item" wx:for="{{item.roomList}}" wx:for-item="room" wx:key="name" wx:if="{{index < 3}}">
               <image class="room-thumb" src="{{room.roomImages[0]}}" mode="aspectFill" />
-              
               <view class="room-detail">
                 <text class="room-name">{{room.name}}</text>
                 <text class="room-info">{{room.area}}㎡ | 剩{{room.totalCount}}间</text>
               </view>
-              
               <view class="room-price">
                 <text class="symbol">¥</text>
                 <text class="num">{{room.price / 100}}</text>
               </view>
-
               <view class="booking-btn-wrap">
                 <t-button
                   theme="primary"
@@ -48,7 +42,7 @@
                   data-room-id="{{room.id}}"
                   data-room-name="{{room.name}}"
                   data-room-price="{{room.price}}"
-                  data-hotel-name="{{item.name}}" 
+                  data-hotel-name="{{item.name}}"
                 >
                   预订
                 </t-button>
@@ -74,41 +68,47 @@
       
       <view class="popup-content">
         <view class="date-picker-wrapper">
-          <text class="label">选择入住/离店日期（一个月内）</text>
-          <view class="date-range-pickers">
-            <picker mode="date" start="{{minDateStr}}" end="{{maxDateStr}}" value="{{selectedCheckInDate}}" bindchange="onCheckInDateChange">
-              <view class="picker picker-left">
-                <text wx:if="{{selectedCheckInDate}}">入住: {{selectedCheckInDate}}</text>
-                <text wx:else>选择入住</text>
-              </view>
-            </picker>
-            <picker mode="date" start="{{minDateStr}}" end="{{maxDateStr}}" value="{{selectedCheckOutDate}}" bindchange="onCheckOutDateChange">
-              <view class="picker picker-right">
-                <text wx:if="{{selectedCheckOutDate}}">离店: {{selectedCheckOutDate}}</text>
-                <text wx:else>选择离店</text>
-              </view>
-            </picker>
+          <text class="label">入住日期</text>
+          <view class="date-cell" bindtap="toggleCheckInVisible">
+            <text>{{selectedCheckInDate || '请选择入住日期'}}</text>
+          </view>
+          
+          <text class="label" style="margin-top: 24rpx;">离店日期</text>
+          <view class="date-cell" bindtap="toggleCheckOutVisible">
+            <text>{{selectedCheckOutDate || '请选择离店日期'}}</text>
           </view>
         </view>
 
         <view class="popup-footer">
-          <t-button
-            theme="default"
-            variant="outline"
-            bind:tap="closeBookingPopup"
-          >
-            取消
-          </t-button>
-          <t-button
-            theme="primary"
-            bind:tap="submitBooking"
-          >
-            确认预订
-          </t-button>
+          <t-button theme="default" variant="outline" bind:tap="closeBookingPopup">取消</t-button>
+          <t-button theme="primary" bind:tap="submitBooking">确认预订</t-button>
         </view>
       </view>
     </view>
   </t-popup>
+
+  <t-date-time-picker
+    title="选择入住日期"
+    bindconfirm="onCheckInDateConfirm"
+    bindcancel="toggleCheckInVisible"
+    visible="{{checkInVisible}}"
+    mode="date"
+    start="{{minDateStr}}"
+    end="{{maxDateStr}}"
+    format="YYYY-MM-DD"
+    value="{{selectedCheckInDate}}"
+  />
+  <t-date-time-picker
+    title="选择离店日期"
+    bindconfirm="onCheckOutDateConfirm"
+    bindcancel="toggleCheckOutVisible"
+    visible="{{checkOutVisible}}"
+    mode="date"
+    start="{{minDateStr}}"
+    end="{{maxDateStr}}"
+    format="YYYY-MM-DD"
+    value="{{selectedCheckOutDate}}"
+  />
 </view>
 
 <t-toast id="t-toast" />

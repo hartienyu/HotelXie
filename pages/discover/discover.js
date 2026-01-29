@@ -4,12 +4,13 @@ import { submitBooking } from '../../services/booking/submitBooking';
 Page({
   data: {
     goodsList: [],
-    goodsListLoadStatus: 0, 
-    // 预订相关
+    goodsListLoadStatus: 0,
     showBookingPopup: false,
+    checkInVisible: false,
+    checkOutVisible: false,
     selectedRoomId: null,
     selectedRoomName: '',
-    selectedHotelName: '', // 🟢 必须有这个字段
+    selectedHotelName: '',
     selectedRoomPrice: 0,
     selectedCheckInDate: '',
     selectedCheckOutDate: '',
@@ -82,13 +83,8 @@ Page({
     }
   },
 
-  // 🟢 1. 打开弹窗，获取并保存数据
   openBookingPopup(e) {
-    // dataset 会自动把 data-room-id 转为 roomId, data-hotel-name 转为 hotelName
     const { roomId, roomName, roomPrice, hotelName } = e.currentTarget.dataset;
-    
-    console.log('点击预订，数据:', { roomId, roomName, hotelName }); // 调试日志
-
     const today = new Date();
     const pad = (n) => (n < 10 ? `0${n}` : `${n}`);
     const format = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -100,7 +96,7 @@ Page({
       showBookingPopup: true,
       selectedRoomId: roomId,
       selectedRoomName: roomName,
-      selectedHotelName: hotelName || '未知酒店', // 保存到 data
+      selectedHotelName: hotelName || '未知酒店',
       selectedRoomPrice: roomPrice,
       selectedCheckInDate: defaultCheckIn,
       selectedCheckOutDate: defaultCheckOut,
@@ -119,15 +115,30 @@ Page({
     });
   },
 
-  onCheckInDateChange(e) {
-    if (e.detail.value) this.setData({ selectedCheckInDate: e.detail.value });
+  toggleCheckInVisible() {
+    this.setData({ checkInVisible: !this.data.checkInVisible });
   },
 
-  onCheckOutDateChange(e) {
-    if (e.detail.value) this.setData({ selectedCheckOutDate: e.detail.value });
+  toggleCheckOutVisible() {
+    this.setData({ checkOutVisible: !this.data.checkOutVisible });
   },
 
-  // 🟢 2. 提交预订，传递所有参数
+  onCheckInDateConfirm(e) {
+    const { value } = e.detail;
+    this.setData({ 
+      selectedCheckInDate: value,
+      checkInVisible: false 
+    });
+  },
+
+  onCheckOutDateConfirm(e) {
+    const { value } = e.detail;
+    this.setData({ 
+      selectedCheckOutDate: value,
+      checkOutVisible: false 
+    });
+  },
+
   async submitBooking() {
     const { selectedCheckInDate, selectedCheckOutDate, selectedRoomId, selectedRoomPrice, selectedHotelName, selectedRoomName } = this.data;
     
@@ -167,8 +178,6 @@ Page({
         selectedRoomName
       );
 
-      console.log('预订API返回结果(res):', res);
-
       if (res) {
         wx.showModal({
           title: '预订成功',
@@ -185,7 +194,6 @@ Page({
         });
       }
     } catch (err) {
-      console.error('预订失败:', err);
       wx.showModal({
         title: '预订失败',
         content: err.message || '请稍后重试',
@@ -197,21 +205,15 @@ Page({
 
   async submitBookingAPI(roomId, checkInDate, checkOutDate, roomPrice, hotelName, roomName) {
     try {
-      // 1. 调用 service 层
       const res = await submitBooking(roomId, checkInDate, checkOutDate, roomPrice, hotelName, roomName);
-      
-      // 2. 检查结果
       if (res && res.code === 0) {
-        return true; // 成功，返回 true 进入 if(res)
+        return true;
       } else {
-        // 🔴 关键修复：如果 code 不是 0，主动抛出错误！
-        // 这样外面的 catch (err) 才能捕获到，并弹出 wx.showModal 提示
         const errMsg = (res && res.message) ? res.message : '预订失败，请重试';
         throw new Error(errMsg);
       }
     } catch (err) {
-      console.error('API Error:', err);
-      throw err; // 必须继续向上抛出，外层的 submitBooking 方法才能捕获
+      throw err;
     }
   },
 });
