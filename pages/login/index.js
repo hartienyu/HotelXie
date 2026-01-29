@@ -45,7 +45,7 @@ Page({
         
         // 跳转回首页
         setTimeout(() => {
-          wx.reLaunch({ url: '/pages/home/home' });
+          wx.reLaunch({ url: '/pages/discover/discover' });
         }, 500);
 
       } else {

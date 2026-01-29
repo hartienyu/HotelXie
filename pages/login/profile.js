@@ -92,7 +92,7 @@ Page({
       wx.showToast({ title: '注册成功' });
       
       setTimeout(() => {
-        wx.reLaunch({ url: '/pages/home/home' });
+        wx.reLaunch({ url: '/pages/discover/discover' });
       }, 1000);
 
     } catch (err) {
