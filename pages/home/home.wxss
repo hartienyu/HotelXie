@@ -1,0 +1,306 @@
+/* 1. 页面基础 */
+page {
+  background-color: #f6f6f6;
+  padding-bottom: env(safe-area-inset-bottom);
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden; /* 禁止页面纵向滚动，改为按屏幕高度适配 */
+}
+
+/* --- 2. 顶部沉浸式背景 --- */
+.bg-swiper-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40vh; /* 缩短顶部背景高度以保证下方内容能在同屏内展示 */
+  z-index: 0;
+}
+
+/* 强制 Swiper 填满 */
+.fullscreen-swiper {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* 穿透修改 TDesign 内部 */
+.fullscreen-swiper .t-swiper-host,
+.fullscreen-swiper .t-swiper__container,
+.fullscreen-swiper .t-swiper__item {
+  height: 100% !important;
+}
+
+/* 图片填满 */
+.custom-swiper-image {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* 遮罩 */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0) 60%, rgba(246,246,246,1));
+  pointer-events: none;
+}
+
+/* 酒店 Logo - 稍微往上提一点 */
+.hotel-branding {
+  position: absolute;
+  top: 20%; /* 向上移动品牌信息，配合更短的背景高度 */
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  z-index: 1;
+  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.3);
+}
+.brand-title {
+  display: block;
+  font-size: 70rpx;
+  font-weight: bold;
+  letter-spacing: 6rpx;
+  margin-bottom: 10rpx;
+}
+.brand-subtitle {
+  font-size: 30rpx;
+  opacity: 0.9;
+  letter-spacing: 8rpx;
+}
+
+/* --- 3. 悬浮岛容器 (关键修改位置) --- */
+.floating-island-container {
+  position: relative;
+  z-index: 10;
+  margin-top: 38vh; /* 与顶部 40vh 保持小间隙，确保卡片露出并整体在可视区内 */
+  padding: 0 32rpx;
+}
+
+/* 预订卡片 */
+.booking-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx 28rpx; /* 进一步减少内边距以节省垂直空间 */
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+  max-height: calc(100vh - 40vh - 120rpx); /* 限制卡片高度，避免超出视窗 */
+  overflow: hidden;
+}
+
+.card-row { width: 100%; }
+
+/* 城市行 */
+.city-row {
+  border-bottom: 1rpx solid #f5f5f5;
+  padding-bottom: 20rpx;
+}
+.city-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.city-name {
+  font-size: 38rpx; /* 字体微调 */
+  font-weight: bold;
+  color: #333;
+}
+.location-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* --- 日期行样式 --- */
+.date-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx 0; /* 增加一点内边距 */
+}
+
+.date-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-col.right {
+  align-items: flex-end; /* 右侧对齐 */
+}
+
+.date-val {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.2;
+}
+
+/* 🟢 新增：日期描述行 (周几 + 入住/离店) */
+.date-desc-row {
+  display: flex;
+  align-items: center;
+  margin-top: 8rpx;
+}
+
+.date-week {
+  font-size: 24rpx;
+  color: #333;
+  margin-right: 8rpx; /* 周几和标签的间距 */
+}
+
+/* 如果是右侧（离店），周几在标签左边，或者反过来，
+   这里默认左对齐显示： "周一 入住" */
+.date-col.right .date-week {
+  margin-right: 8rpx;
+}
+
+.date-label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* --- 中间的天数样式 --- */
+.date-duration {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 20rpx;
+}
+
+.duration-badge {
+  font-size: 22rpx;
+  color: #333;
+  background: #fff;
+  border: 1rpx solid #e0e0e0;
+  padding: 2rpx 12rpx;
+  border-radius: 20rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.line {
+  width: 100%;
+  height: 1rpx;
+  background: #eee;
+  margin-top: -12rpx; /* 让线穿过 Badge 的下方视觉中心 */
+  z-index: 1;
+}
+
+/* 搜索框 */
+.search-fake-input {
+  background: #f7f8fa;
+  height: 80rpx;
+  border-radius: 40rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 30rpx;
+}
+.placeholder { font-size: 26rpx; color: #bbb; margin-left: 16rpx; }
+
+/* 🟢 新增：真正的输入框样式 */
+.real-search-input {
+  flex: 1; /* 填满剩余空间 */
+  height: 100%;
+  margin-left: 16rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 🟢 新增：占位符样式（替代原来的 .placeholder 类） */
+.placeholder-style {
+  color: #bbb;
+  font-size: 26rpx;
+}
+
+/* 按钮 */
+.booking-btn {
+  background-color: #3f5c56 !important;
+  color: white !important;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  width: 100% !important;
+  padding: 22rpx 0;
+  margin: 0 !important;
+  box-shadow: 0 8rpx 16rpx rgba(63, 92, 86, 0.3);
+}
+
+/* --- 4. 底部服务栏 (格式修复) --- */
+.service-bar {
+  display: flex;
+  justify-content: space-around; 
+  align-items: center;
+  background: #fff;
+  margin-top: 16rpx; /* 减少间距，节省垂直空间 */
+  padding: 18rpx 0;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  width: 100%; 
+  box-sizing: border-box;
+}
+
+.service-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* 让它们均分空间，防止挤压 */
+  flex: 1; 
+  gap: 10rpx;
+  font-size: 24rpx;
+  color: #555;
+}
+
+/* 分割线 */
+.service-item-divider { 
+  width: 2rpx; 
+  height: 30rpx; 
+  background: #eee; 
+  flex-shrink: 0; /* 防止分割线被压缩没了 */
+}
+
+/* --- 5. 弹窗样式 --- */
+.popup-content {
+  background: #f5f5f5;
+  border-radius: 24rpx 24rpx 0 0;
+  overflow: hidden;
+  padding-bottom: 0;
+}
+.popup-content .popup-title {
+  background: #fff;
+  text-align: center;
+  font-size: 24rpx;
+  color: #999;
+  height: 112rpx;
+  line-height: 112rpx;
+  position: relative;
+}
+.popup-content .popup-phone,
+.popup-content .popup-close {
+  background: #fff;
+  height: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 30rpx;
+  color: #333;
+  width: 100%;
+}
+button.popup-phone {
+  border-radius: 0; margin: 0; padding: 0; line-height: inherit; background-color: #fff;
+}
+button.popup-phone::after { border: none; }
+.popup-content .popup-close {
+  color: #333; border: 0; margin-top: 16rpx; padding-bottom: env(safe-area-inset-bottom); box-sizing: content-box; height: 100rpx;
+}
+.border-bottom-1px { position: relative; }
+.border-bottom-1px::after {
+  position: absolute; display: block; content: ''; box-sizing: border-box; top: 0; left: 0; width: 200%; height: 200%; transform: scale(0.5); transform-origin: left top; border-bottom: 2rpx solid #e5e5e5; pointer-events: none; z-index: 1;
+}

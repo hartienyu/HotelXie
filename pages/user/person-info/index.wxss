@@ -1,0 +1,17 @@
+.person-info {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding-top: 20rpx;
+}
+
+.avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.logout-btn-wrap {
+  margin-top: 60rpx;
+  padding: 0 32rpx;
+}
